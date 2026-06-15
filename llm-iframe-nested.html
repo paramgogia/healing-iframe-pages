@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nested Iframe</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
+        main { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        iframe { width: 100%; height: 100vh; border: none; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,.1); overflow: hidden; }
+        @media (max-width: 768px) { iframe { height: 100vh; } }
+    </style>
+</head>
+<body>
+    <main>
+        <iframe id="iframe1" title="Nested Iframe" srcdoc='
+        <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Iframe with HTML Content</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; text-align: center; }
+                    iframe { width: 100%; height: 100vh; border: 1px solid; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,.1); overflow: hidden; }
+                    @media (max-width: 768px) { iframe { height: 100vh; } }
+                </style>
+            </head>
+            <body>
+                <h1>Main Page Content</h1>
+                <p>This is the content of the main page.</p>
+                <iframe id="iframe" src="" frameborder="0"></iframe>
+            </body>
+        </html>
+        '>
+        </iframe>
+        <script>
+        // Nested same-origin: inner page resolved relative to THIS page's URL (works on any host).
+        const iframeUrl = new URL('llm-html-form.html', window.location.href).href;
+        const outerIframe = document.getElementById('iframe1');
+        outerIframe.addEventListener('load', () => {
+            const innerIframe = outerIframe.contentDocument.getElementById('iframe');
+            if (innerIframe) {
+                innerIframe.src = iframeUrl;
+            }
+        });
+        </script>
+    </main>
+</body>
+</html>
